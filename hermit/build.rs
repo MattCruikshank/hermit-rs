@@ -126,6 +126,11 @@ impl KernelSrc {
 			"cargo:rerun-if-changed={}",
 			self.src_dir.join("rust-toolchain.toml").display()
 		);
+		// The kernel's own sources: without this, edits to the kernel were only picked up by a
+		// clean build (the lines above cover its manifest and its path dependencies' sources).
+		println!("cargo:rerun-if-changed={}", self.src_dir.join("src").display());
+		println!("cargo:rerun-if-changed={}", self.src_dir.join("build.rs").display());
+		println!("cargo:rerun-if-changed={}", self.src_dir.join("Cargo.lock").display());
 
 		println!("cargo:rerun-if-env-changed=HERMIT_CAREFUL");
 		println!("cargo:rerun-if-env-changed=HERMIT_DNS1");
